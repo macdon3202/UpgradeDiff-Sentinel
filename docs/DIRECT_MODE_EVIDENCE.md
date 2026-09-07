@@ -3,9 +3,9 @@
 ## Frozen artifacts
 
 - Contract: `contracts/upgrade_diff_sentinel.py`
-- Version: `UPGRADE_DIFF_SENTINEL_V1`
-- Contract SHA-256: `e6b4f35608236221f101ee208bbde35f448bae7e33b4fadaf8e91d3f1f924fde`
-- Test SHA-256: `64f958b52f8a923c09c3f8194098e2c1fa86ded93c1629eb3ad655a42ca79991`
+- Version: `UPGRADE_DIFF_SENTINEL_V2`
+- Contract SHA-256: `6631c3dc2bb77d6ae03ea02ca6f454639dcdc4630feee2ecd80dbdbc82951c96`
+- Test SHA-256: `2ef1cf48eb33c4ba1b61466ec1c8d16aef1cb757d446bbd764f06bc5c2d782d9`
 - Constructor inputs: none
 
 ## Reproducible commands and outcome
@@ -15,7 +15,7 @@ genvm-lint check contracts\upgrade_diff_sentinel.py
 PASS: lint (3 checks), validation, 6 methods (3 view, 3 write)
 
 gltest -q --disable-warnings
-PASS: 39 passed in 2.47s
+PASS: 40 passed in 2.86s
 ```
 
 The 27 suppressed warnings are expected unused-mock warnings after an earlier
@@ -31,6 +31,7 @@ canonical fetch fails closed; they are not contract exceptions or failed tests.
 - HTTP failure, malformed source/model, absent/binary and oversized patches.
 - Creator authorization, replay resistance, terminal immutability and retry cap.
 - Independent validator refetch with changed-evidence rejection.
+- Distinct manifest-attestation commit preventing target-SHA self-reference.
 
 ## Evidence boundary
 

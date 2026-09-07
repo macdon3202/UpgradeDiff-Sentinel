@@ -14,6 +14,7 @@ CREATOR_B = bytes.fromhex(CREATOR[2:])
 OTHER_B = bytes.fromhex(OTHER[2:])
 BASE = "a" * 40
 TARGET = "b" * 40
+MANIFEST_COMMIT = "c" * 40
 PATH = "audit/upgrade.json"
 TAG = "upgrade-v2"
 SCOPE = "Only documentation and observability instrumentation may change."
@@ -25,7 +26,7 @@ def manifest_value(**changes):
         "repository": "example/protocol",
         "base_commit": BASE,
         "target_commit": TARGET,
-        "changed_files": [PATH, "contracts/Vault.sol"],
+        "changed_files": ["contracts/Vault.sol"],
         "declared_scope": ["documentation", "observability"],
         "forbidden_changes": ["authorization", "asset_flow", "fees", "storage_layout"],
     }
@@ -46,7 +47,6 @@ def compare_value(**changes):
         "total_commits": 1,
         "commits": [{"sha": TARGET}],
         "files": [
-            {"filename": PATH, "patch": "+canonical manifest"},
             {"filename": "contracts/Vault.sol", "patch": "+emit UpgradeObserved();"},
         ],
     }
@@ -66,6 +66,7 @@ def release_value(scope=SCOPE, **changes):
             "upgrade_repository: example/protocol",
             f"upgrade_base_commit: {BASE}",
             f"upgrade_target_commit: {TARGET}",
+            f"upgrade_manifest_commit: {MANIFEST_COMMIT}",
             f"upgrade_manifest_sha256: {manifest_digest}",
             f"upgrade_scope_sha256: {scope_digest}",
         ]),
@@ -88,6 +89,7 @@ def create(contract, direct_vm, **changes):
         "repository": "protocol",
         "base_commit": BASE,
         "target_commit": TARGET,
+        "manifest_commit": MANIFEST_COMMIT,
         "manifest_path": PATH,
         "manifest_sha256": hashlib.sha256(raw).hexdigest(),
         "release_tag": TAG,
@@ -125,12 +127,14 @@ def test_happy_path_is_compatible_and_append_only(direct_vm, direct_deploy):
     assert record.approved_scope_sha256 == hashlib.sha256(SCOPE.encode()).hexdigest()
     assert record.final_evidence_digest == attempt.evidence_digest
     assert contract.get_config()["compatible_count"] == 1
+    assert contract.get_config()["version"] == "UPGRADE_DIFF_SENTINEL_V2"
 
 
 @pytest.mark.parametrize("field,value,error", [
     ("owner", "bad/name", "INVALID_OWNER"),
     ("base_commit", "main", "INVALID_BASE_COMMIT"),
     ("target_commit", BASE, "IDENTICAL_COMMITS"),
+    ("manifest_commit", TARGET, "MANIFEST_COMMIT_NOT_DISTINCT"),
     ("manifest_path", "../audit.json", "INVALID_MANIFEST_PATH"),
     ("manifest_sha256", "A" * 64, "INVALID_MANIFEST_DIGEST"),
     ("approved_scope", "too short", "INVALID_APPROVED_SCOPE"),
@@ -203,7 +207,7 @@ def test_manifest_digest_mismatch(direct_vm, direct_deploy):
 def test_manifest_file_coverage_must_be_exact(direct_vm, direct_deploy):
     contract = deploy(direct_vm, direct_deploy)
     create(contract, direct_vm)
-    compare = compare_value(files=[{"filename": PATH, "patch": "+manifest"}])
+    compare = compare_value(files=[{"filename": "docs/extra.md", "patch": "+extra"}])
     evaluate(contract, direct_vm, compare=compare)
     assert contract.get_assessment(0).reason_code == "FILE_COVERAGE_FAILED"
 
@@ -279,8 +283,8 @@ def test_binary_or_unavailable_patch_is_review_required(direct_vm, direct_deploy
 
 
 @pytest.mark.parametrize("compare,manifest", [
-    (compare_value(files=[{"filename": PATH, "patch": "+x"}, {"filename": PATH, "patch": "+y"}]), None),
-    (compare_value(files=[{"filename": PATH, "patch": "+" + "x" * 33000}]), None),
+    (compare_value(files=[{"filename": "contracts/Vault.sol", "patch": "+x"}, {"filename": "contracts/Vault.sol", "patch": "+y"}]), None),
+    (compare_value(files=[{"filename": "contracts/Vault.sol", "patch": "+" + "x" * 33000}]), None),
     (None, b"not-json"),
 ])
 def test_malformed_or_oversized_canonical_data_never_passes(direct_vm, direct_deploy, compare, manifest):

@@ -3,8 +3,12 @@
 UpgradeDiff Sentinel is a GenLayer Intelligent Contract that checks whether a
 GitHub protocol upgrade remains within a scope approved in a published GitHub
 Release. The submitter seals repository identifiers, exact base/target commits,
-a commit-pinned manifest digest and release tag. Validators independently fetch
+a separately commit-pinned manifest digest and release tag. Validators independently fetch
 GitHub's compare API, the raw manifest and the release record.
+
+The manifest lives in a distinct attestation commit created after the target
+commit. This avoids an impossible self-reference where a target commit would
+need to contain its own not-yet-known SHA.
 
 Deterministic code verifies repository identity, commit ancestry, changed-file
 coverage, exact manifest digest and approval markers. A bounded model classifies

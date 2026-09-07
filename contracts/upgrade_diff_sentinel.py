@@ -9,7 +9,7 @@ from typing import Any
 from genlayer import *
 
 
-VERSION = "UPGRADE_DIFF_SENTINEL_V1"
+VERSION = "UPGRADE_DIFF_SENTINEL_V2"
 GITHUB_API = "https://api.github.com"
 GITHUB_RAW = "https://raw.githubusercontent.com"
 SCHEMA = "upgrade-diff-sentinel/v1"
@@ -47,6 +47,7 @@ class AssessmentRecord:
     repository: str
     base_commit: str
     target_commit: str
+    manifest_commit: str
     manifest_path: str
     manifest_sha256: str
     release_tag: str
@@ -161,7 +162,7 @@ def _compare_url(record: AssessmentRecord) -> str:
 
 
 def _manifest_url(record: AssessmentRecord) -> str:
-    return f"{GITHUB_RAW}/{record.owner}/{record.repository}/{record.target_commit}/{_encode_path(record.manifest_path)}"
+    return f"{GITHUB_RAW}/{record.owner}/{record.repository}/{record.manifest_commit}/{_encode_path(record.manifest_path)}"
 
 
 def _release_url(record: AssessmentRecord) -> str:
@@ -313,7 +314,7 @@ def _observe(record: AssessmentRecord) -> dict:
         manifest_binding = MATCH if manifest.get("repository") == f"{record.owner}/{record.repository}" and manifest.get("base_commit") == record.base_commit and manifest.get("target_commit") == record.target_commit and manifest_digest == record.manifest_sha256 else MISMATCH
         file_coverage = MATCH if sorted(manifest["changed_files"]) == names else MISMATCH
         body = release.get("body")
-        markers = [f"upgrade_repository: {record.owner}/{record.repository}", f"upgrade_base_commit: {record.base_commit}", f"upgrade_target_commit: {record.target_commit}", f"upgrade_manifest_sha256: {record.manifest_sha256}", f"upgrade_scope_sha256: {record.approved_scope_sha256}"]
+        markers = [f"upgrade_repository: {record.owner}/{record.repository}", f"upgrade_base_commit: {record.base_commit}", f"upgrade_target_commit: {record.target_commit}", f"upgrade_manifest_commit: {record.manifest_commit}", f"upgrade_manifest_sha256: {record.manifest_sha256}", f"upgrade_scope_sha256: {record.approved_scope_sha256}"]
         approval_binding = MATCH if release.get("tag_name") == record.release_tag and release.get("target_commitish") == record.target_commit and release.get("draft") is False and release.get("prerelease") is False and isinstance(body, str) and all(marker in body.splitlines() for marker in markers) else MISMATCH
         model = _model(record, manifest, patches)
         canonical = json.dumps({"compare": {"status": compare.get("status"), "base": compare.get("base_commit"), "merge_base": compare.get("merge_base_commit"), "head": compare.get("head_commit"), "total_commits": compare.get("total_commits"), "commits": compare.get("commits"), "files": compare.get("files")}, "manifest_sha256": manifest_digest, "approved_scope_sha256": record.approved_scope_sha256, "manifest": manifest, "release": {"tag_name": release.get("tag_name"), "target_commitish": release.get("target_commitish"), "draft": release.get("draft"), "prerelease": release.get("prerelease"), "body": body}}, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
@@ -356,21 +357,23 @@ class UpgradeDiffSentinel(gl.Contract):
         self.incompatible_count = u256(0)
 
     @gl.public.write
-    def create_assessment(self, owner: str, repository: str, base_commit: str, target_commit: str, manifest_path: str, manifest_sha256: str, release_tag: str, approved_scope: str) -> u256:
+    def create_assessment(self, owner: str, repository: str, base_commit: str, target_commit: str, manifest_commit: str, manifest_path: str, manifest_sha256: str, release_tag: str, approved_scope: str) -> u256:
         owner_value = _identifier(owner, "INVALID_OWNER")
         repo_value = _identifier(repository, "INVALID_REPOSITORY")
         base = _commit(base_commit, "INVALID_BASE_COMMIT")
         target = _commit(target_commit, "INVALID_TARGET_COMMIT")
         _require(base != target, "IDENTICAL_COMMITS")
+        attestation = _commit(manifest_commit, "INVALID_MANIFEST_COMMIT")
+        _require(attestation != target and attestation != base, "MANIFEST_COMMIT_NOT_DISTINCT")
         path = _path(manifest_path)
         digest = _digest(manifest_sha256)
         tag = _identifier(release_tag, "INVALID_RELEASE_TAG")
         scope = _scope(approved_scope)
         scope_digest = hashlib.sha256(scope.encode("utf-8")).hexdigest()
-        tuple_key = hashlib.sha256(f"{owner_value.lower()}/{repo_value.lower()}|{base}|{target}|{path}|{digest}|{tag}".encode("utf-8")).hexdigest()
+        tuple_key = hashlib.sha256(f"{owner_value.lower()}/{repo_value.lower()}|{base}|{target}|{attestation}|{path}|{digest}|{tag}".encode("utf-8")).hexdigest()
         _require(not self.tuple_index.get(tuple_key, False), "ASSESSMENT_REPLAY")
         assessment_id = self.assessment_count
-        self.assessments[assessment_id] = AssessmentRecord(assessment_id, gl.message.sender_address, owner_value, repo_value, base, target, path, digest, tag, scope, scope_digest, SEALED, "", u8(0), "")
+        self.assessments[assessment_id] = AssessmentRecord(assessment_id, gl.message.sender_address, owner_value, repo_value, base, target, attestation, path, digest, tag, scope, scope_digest, SEALED, "", u8(0), "")
         self.tuple_index[tuple_key] = True
         self.assessment_count = assessment_id + u256(1)
         return assessment_id
