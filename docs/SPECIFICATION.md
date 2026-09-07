@@ -50,9 +50,9 @@ alignment (`MATCH`, `MISMATCH`, `UNCLEAR`). It cannot return the final verdict.
 
 1. Only assessment creator can evaluate or retry.
 2. Base and target must differ and one exact tuple can be sealed only once.
-3. Compare status must be `ahead`; base, merge-base and head must match; the
-   complete commit list must fit one bounded page; and every changed file must
-   appear exactly once in the manifest.
+3. Compare status must be `ahead`; base and merge-base must match; the complete
+   commit list must fit one bounded page and its final SHA must equal target;
+   every changed file must appear exactly once in the manifest.
 4. Manifest bytes fetched at the distinct manifest commit and all identity
    fields must match sealed inputs.
 5. Published release must point to the target commit and bind the repository,

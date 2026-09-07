@@ -43,7 +43,6 @@ def compare_value(**changes):
         "status": "ahead",
         "base_commit": {"sha": BASE},
         "merge_base_commit": {"sha": BASE},
-        "head_commit": {"sha": TARGET},
         "total_commits": 1,
         "commits": [{"sha": TARGET}],
         "files": [
@@ -127,7 +126,7 @@ def test_happy_path_is_compatible_and_append_only(direct_vm, direct_deploy):
     assert record.approved_scope_sha256 == hashlib.sha256(SCOPE.encode()).hexdigest()
     assert record.final_evidence_digest == attempt.evidence_digest
     assert contract.get_config()["compatible_count"] == 1
-    assert contract.get_config()["version"] == "UPGRADE_DIFF_SENTINEL_V2"
+    assert contract.get_config()["version"] == "UPGRADE_DIFF_SENTINEL_V3"
 
 
 @pytest.mark.parametrize("field,value,error", [
@@ -186,7 +185,7 @@ def test_scope_results_are_closed(direct_vm, direct_deploy, alignment, state, re
 @pytest.mark.parametrize("change", [
     {"status": "diverged"},
     {"base_commit": {"sha": TARGET}},
-    {"head_commit": {"sha": BASE}},
+    {"total_commits": 101},
     {"total_commits": 2},
     {"commits": [{"sha": BASE}]},
 ])

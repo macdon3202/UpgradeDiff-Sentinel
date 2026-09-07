@@ -3,9 +3,9 @@
 ## Frozen artifacts
 
 - Contract: `contracts/upgrade_diff_sentinel.py`
-- Version: `UPGRADE_DIFF_SENTINEL_V2`
-- Contract SHA-256: `6631c3dc2bb77d6ae03ea02ca6f454639dcdc4630feee2ecd80dbdbc82951c96`
-- Test SHA-256: `2ef1cf48eb33c4ba1b61466ec1c8d16aef1cb757d446bbd764f06bc5c2d782d9`
+- Version: `UPGRADE_DIFF_SENTINEL_V3`
+- Contract SHA-256: `2c8d2e0ad793f8e3a683b02993c0282c1f60a28b36d38dbe1c2a710265732bf0`
+- Test SHA-256: `077bd71aa13be706a3b20b8b3f995e6c57e38f0b7486cc620126b1485700200b`
 - Constructor inputs: none
 
 ## Reproducible commands and outcome
@@ -15,7 +15,7 @@ genvm-lint check contracts\upgrade_diff_sentinel.py
 PASS: lint (3 checks), validation, 6 methods (3 view, 3 write)
 
 gltest -q --disable-warnings
-PASS: 40 passed in 2.86s
+PASS: 40 passed in 2.45s
 ```
 
 The 27 suppressed warnings are expected unused-mock warnings after an earlier

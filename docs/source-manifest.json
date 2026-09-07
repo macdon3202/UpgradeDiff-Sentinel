@@ -1,8 +1,8 @@
 {
   "contract": "UpgradeDiffSentinel",
-  "version": "UPGRADE_DIFF_SENTINEL_V2",
+  "version": "UPGRADE_DIFF_SENTINEL_V3",
   "source": "contracts/upgrade_diff_sentinel.py",
-  "sha256": "6631c3dc2bb77d6ae03ea02ca6f454639dcdc4630feee2ecd80dbdbc82951c96",
+  "sha256": "2c8d2e0ad793f8e3a683b02993c0282c1f60a28b36d38dbe1c2a710265732bf0",
   "constructor": [],
   "deployment": null,
   "live_evidence": []

@@ -81,7 +81,7 @@ def main() -> None:
     wallet_b = create_account(os.environ["SERVICE_LEDGER_KEY_B"])
     client = create_client(chain=studionet, account=wallet_a, endpoint=RPC)
     config = read(client, args.address, wallet_a, "get_config", [])
-    expected = {"version": "UPGRADE_DIFF_SENTINEL_V2", "github_api": "https://api.github.com", "github_raw": "https://raw.githubusercontent.com", "max_attempts": 3}
+    expected = {"version": "UPGRADE_DIFF_SENTINEL_V3", "github_api": "https://api.github.com", "github_raw": "https://raw.githubusercontent.com", "max_attempts": 3}
     if any(config.get(key) != value for key, value in expected.items()):
         raise RuntimeError(f"unexpected deployment config: {config}")
     evidence = {"network": "studionet", "contract": args.address, "explorer": f"{EXPLORER}/address/{args.address}", "config": config, "transactions": [], "readbacks": {}}

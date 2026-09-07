@@ -1,0 +1,13 @@
+{
+  "owner": "macdon3202",
+  "repository": "upgrade-diff-sentinel-fixture",
+  "base_commit": "4c58614d793be96d14f13bdb5a73ed749c6454a0",
+  "target_commit": "571300956f7722113e518bc3728ffd8920d10140",
+  "manifest_commit": "b10a9b7a038a4d4c6e448549e2530d3c68247672",
+  "manifest_path": "audit/upgrade.json",
+  "manifest_sha256": "1d6699f92d30543a8c32138739f62aeec5d49529392930b4d8a845481a61939c",
+  "release_tag": "upgrade-v2",
+  "approved_scope": "Only documentation and observability instrumentation may change.",
+  "scope_sha256": "d21951480cfd86d3f9c0622580868152b78086534540353ba06b07b618fa77b0",
+  "release_url": "https://github.com/macdon3202/upgrade-diff-sentinel-fixture/releases/tag/upgrade-v2"
+}

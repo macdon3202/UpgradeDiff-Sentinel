@@ -11,6 +11,88 @@
     "max_attempts": 3,
     "version": "UPGRADE_DIFF_SENTINEL_V2"
   },
-  "transactions": [],
-  "readbacks": {}
+  "transactions": [
+    {
+      "method": "create_assessment",
+      "tx": "0xee571146e0b69bb22ef06250af0daefc83bdaed51176951365e1813efb651c39",
+      "status": "FINALIZED",
+      "execution": "SUCCESS",
+      "consensus": "MAJORITY_AGREE",
+      "expected_error": false,
+      "explorer": "https://explorer-studio.genlayer.com/transactions/0xee571146e0b69bb22ef06250af0daefc83bdaed51176951365e1813efb651c39"
+    },
+    {
+      "method": "evaluate_upgrade",
+      "tx": "0x754ff5a9958b0b014922be318e9e1c8cc19c0011c8e2b46916a7687f96039e63",
+      "status": "FINALIZED",
+      "execution": "ERROR",
+      "consensus": "MAJORITY_AGREE",
+      "expected_error": true,
+      "explorer": "https://explorer-studio.genlayer.com/transactions/0x754ff5a9958b0b014922be318e9e1c8cc19c0011c8e2b46916a7687f96039e63"
+    },
+    {
+      "method": "evaluate_upgrade",
+      "tx": "0xf1efb585105e9e97ae75ac87e60fb6cf6e9ca547719eb30a916d1c21d65105eb",
+      "status": "FINALIZED",
+      "execution": "SUCCESS",
+      "consensus": "MAJORITY_AGREE",
+      "expected_error": false,
+      "explorer": "https://explorer-studio.genlayer.com/transactions/0xf1efb585105e9e97ae75ac87e60fb6cf6e9ca547719eb30a916d1c21d65105eb"
+    }
+  ],
+  "readbacks": {
+    "sealed": {
+      "approved_scope": "Only documentation and observability instrumentation may change.",
+      "approved_scope_sha256": "d21951480cfd86d3f9c0622580868152b78086534540353ba06b07b618fa77b0",
+      "assessment_id": 0,
+      "attempt_count": 0,
+      "base_commit": "4c58614d793be96d14f13bdb5a73ed749c6454a0",
+      "creator": "addr#fed97e2ae1a8c1983b7ca206b3545e6a2c685e43",
+      "final_evidence_digest": "",
+      "manifest_commit": "b10a9b7a038a4d4c6e448549e2530d3c68247672",
+      "manifest_path": "audit/upgrade.json",
+      "manifest_sha256": "1d6699f92d30543a8c32138739f62aeec5d49529392930b4d8a845481a61939c",
+      "owner": "macdon3202",
+      "reason_code": "",
+      "release_tag": "upgrade-v2",
+      "repository": "upgrade-diff-sentinel-fixture",
+      "state": "SEALED",
+      "target_commit": "571300956f7722113e518bc3728ffd8920d10140"
+    },
+    "final": {
+      "approved_scope": "Only documentation and observability instrumentation may change.",
+      "approved_scope_sha256": "d21951480cfd86d3f9c0622580868152b78086534540353ba06b07b618fa77b0",
+      "assessment_id": 0,
+      "attempt_count": 1,
+      "base_commit": "4c58614d793be96d14f13bdb5a73ed749c6454a0",
+      "creator": "addr#fed97e2ae1a8c1983b7ca206b3545e6a2c685e43",
+      "final_evidence_digest": "e966ddea20a373b6af804112bab14550a334bea485d882164563f7ebdd0a6f10",
+      "manifest_commit": "b10a9b7a038a4d4c6e448549e2530d3c68247672",
+      "manifest_path": "audit/upgrade.json",
+      "manifest_sha256": "1d6699f92d30543a8c32138739f62aeec5d49529392930b4d8a845481a61939c",
+      "owner": "macdon3202",
+      "reason_code": "COMPARE_BINDING_FAILED",
+      "release_tag": "upgrade-v2",
+      "repository": "upgrade-diff-sentinel-fixture",
+      "state": "INCOMPATIBLE",
+      "target_commit": "571300956f7722113e518bc3728ffd8920d10140"
+    },
+    "attempt_1": {
+      "approval_binding": "MATCH",
+      "assessment_id": 0,
+      "asset_flow_risk": "NO",
+      "attempt": 1,
+      "authorization_risk": "NO",
+      "compare_binding": "MISMATCH",
+      "derived_state": "INCOMPATIBLE",
+      "evidence_digest": "e966ddea20a373b6af804112bab14550a334bea485d882164563f7ebdd0a6f10",
+      "fee_risk": "NO",
+      "file_coverage": "MATCH",
+      "manifest_binding": "MATCH",
+      "reason_code": "COMPARE_BINDING_FAILED",
+      "scope_alignment": "MATCH",
+      "source_status": "VERIFIED",
+      "storage_risk": "NO"
+    }
+  }
 }

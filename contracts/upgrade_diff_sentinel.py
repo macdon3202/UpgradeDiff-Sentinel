@@ -9,7 +9,7 @@ from typing import Any
 from genlayer import *
 
 
-VERSION = "UPGRADE_DIFF_SENTINEL_V2"
+VERSION = "UPGRADE_DIFF_SENTINEL_V3"
 GITHUB_API = "https://api.github.com"
 GITHUB_RAW = "https://raw.githubusercontent.com"
 SCHEMA = "upgrade-diff-sentinel/v1"
@@ -301,8 +301,6 @@ def _observe(record: AssessmentRecord) -> dict:
             and str(compare["base_commit"].get("sha", "")).lower() == record.base_commit
             and isinstance(compare.get("merge_base_commit"), dict)
             and str(compare["merge_base_commit"].get("sha", "")).lower() == record.base_commit
-            and isinstance(compare.get("head_commit"), dict)
-            and str(compare["head_commit"].get("sha", "")).lower() == record.target_commit
             and complete_commits
             and isinstance(compare.get("total_commits"), int)
             and 1 <= compare["total_commits"] <= 100
@@ -317,7 +315,7 @@ def _observe(record: AssessmentRecord) -> dict:
         markers = [f"upgrade_repository: {record.owner}/{record.repository}", f"upgrade_base_commit: {record.base_commit}", f"upgrade_target_commit: {record.target_commit}", f"upgrade_manifest_commit: {record.manifest_commit}", f"upgrade_manifest_sha256: {record.manifest_sha256}", f"upgrade_scope_sha256: {record.approved_scope_sha256}"]
         approval_binding = MATCH if release.get("tag_name") == record.release_tag and release.get("target_commitish") == record.target_commit and release.get("draft") is False and release.get("prerelease") is False and isinstance(body, str) and all(marker in body.splitlines() for marker in markers) else MISMATCH
         model = _model(record, manifest, patches)
-        canonical = json.dumps({"compare": {"status": compare.get("status"), "base": compare.get("base_commit"), "merge_base": compare.get("merge_base_commit"), "head": compare.get("head_commit"), "total_commits": compare.get("total_commits"), "commits": compare.get("commits"), "files": compare.get("files")}, "manifest_sha256": manifest_digest, "approved_scope_sha256": record.approved_scope_sha256, "manifest": manifest, "release": {"tag_name": release.get("tag_name"), "target_commitish": release.get("target_commitish"), "draft": release.get("draft"), "prerelease": release.get("prerelease"), "body": body}}, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        canonical = json.dumps({"compare": {"status": compare.get("status"), "base": compare.get("base_commit"), "merge_base": compare.get("merge_base_commit"), "total_commits": compare.get("total_commits"), "commits": compare.get("commits"), "files": compare.get("files")}, "manifest_sha256": manifest_digest, "approved_scope_sha256": record.approved_scope_sha256, "manifest": manifest, "release": {"tag_name": release.get("tag_name"), "target_commitish": release.get("target_commitish"), "draft": release.get("draft"), "prerelease": release.get("prerelease"), "body": body}}, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
         return {"source_status": VERIFIED, "compare_binding": compare_binding, "manifest_binding": manifest_binding, "file_coverage": file_coverage, "approval_binding": approval_binding, **model, "evidence_digest": hashlib.sha256(canonical.encode("utf-8")).hexdigest()}
     except ConnectionError:
         return _empty(UNAVAILABLE)
