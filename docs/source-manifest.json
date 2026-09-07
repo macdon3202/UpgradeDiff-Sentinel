@@ -4,6 +4,12 @@
   "source": "contracts/upgrade_diff_sentinel.py",
   "sha256": "2c8d2e0ad793f8e3a683b02993c0282c1f60a28b36d38dbe1c2a710265732bf0",
   "constructor": [],
-  "deployment": null,
-  "live_evidence": []
+  "deployment": {
+    "network": "studionet",
+    "address": "0x455f601Cf9cb73c08df9c4DA6DB6f469e8143306"
+  },
+  "live_evidence": [
+    "docs/studionet-lifecycle.json",
+    "docs/studionet-negative-calls.json"
+  ]
 }

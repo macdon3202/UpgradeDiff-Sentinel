@@ -10,8 +10,14 @@ record = {
     "source": "contracts/upgrade_diff_sentinel.py",
     "sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
     "constructor": [],
-    "deployment": None,
-    "live_evidence": [],
+    "deployment": {
+        "network": "studionet",
+        "address": "0x455f601Cf9cb73c08df9c4DA6DB6f469e8143306",
+    },
+    "live_evidence": [
+        "docs/studionet-lifecycle.json",
+        "docs/studionet-negative-calls.json",
+    ],
 }
 (root / "docs" / "source-manifest.json").write_text(
     json.dumps(record, indent=2) + "\n", encoding="utf-8"

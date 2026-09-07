@@ -75,6 +75,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("address")
     parser.add_argument("--fixture", type=Path)
+    parser.add_argument("--post-negative", action="store_true")
     args = parser.parse_args()
     load_wallets()
     wallet_a = create_account(os.environ["SERVICE_LEDGER_KEY_A"])
@@ -85,7 +86,7 @@ def main() -> None:
     if any(config.get(key) != value for key, value in expected.items()):
         raise RuntimeError(f"unexpected deployment config: {config}")
     evidence = {"network": "studionet", "contract": args.address, "explorer": f"{EXPLORER}/address/{args.address}", "config": config, "transactions": [], "readbacks": {}}
-    if args.fixture:
+    if args.fixture and not args.post_negative:
         fixture = json.loads(args.fixture.read_text(encoding="utf-8"))
         assessment_id = int(config["assessment_count"])
         create_args = [fixture[key] for key in ("owner", "repository", "base_commit", "target_commit", "manifest_commit", "manifest_path", "manifest_sha256", "release_tag", "approved_scope")]
@@ -99,7 +100,21 @@ def main() -> None:
         evidence["transactions"].append(send(client, args.address, wallet_a, "evaluate_upgrade", [assessment_id]))
         evidence["readbacks"]["final"] = read(client, args.address, wallet_a, "get_assessment", [assessment_id])
         evidence["readbacks"]["attempt_1"] = read(client, args.address, wallet_a, "get_attempt", [assessment_id, 1])
-    out = Path(__file__).resolve().parents[1] / "docs" / "studionet-lifecycle.json"
+    elif args.fixture and args.post_negative:
+        fixture = json.loads(args.fixture.read_text(encoding="utf-8"))
+        create_args = [fixture[key] for key in ("owner", "repository", "base_commit", "target_commit", "manifest_commit", "manifest_path", "manifest_sha256", "release_tag", "approved_scope")]
+        before_config = read(client, args.address, wallet_a, "get_config", [])
+        assessment_id = int(before_config["assessment_count"]) - 1
+        before_record = read(client, args.address, wallet_a, "get_assessment", [assessment_id])
+        evidence["transactions"].append(send(client, args.address, wallet_a, "create_assessment", create_args, True))
+        evidence["transactions"].append(send(client, args.address, wallet_a, "retry_assessment", [assessment_id], True))
+        after_config = read(client, args.address, wallet_a, "get_config", [])
+        after_record = read(client, args.address, wallet_a, "get_assessment", [assessment_id])
+        if after_config != before_config or after_record != before_record:
+            raise AssertionError("post-terminal negative calls mutated state")
+        evidence["readbacks"] = {"before_config": before_config, "after_config": after_config, "terminal_record": after_record}
+    filename = "studionet-negative-calls.json" if args.post_negative else "studionet-lifecycle.json"
+    out = Path(__file__).resolve().parents[1] / "docs" / filename
     out.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(evidence, indent=2))
 

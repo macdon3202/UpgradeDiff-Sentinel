@@ -1,7 +1,7 @@
 {
   "network": "studionet",
-  "contract": "0xC8c4F8030D0c7A71Bfd3b1340771Dc3eCab1a747",
-  "explorer": "https://explorer-studio.genlayer.com/address/0xC8c4F8030D0c7A71Bfd3b1340771Dc3eCab1a747",
+  "contract": "0x455f601Cf9cb73c08df9c4DA6DB6f469e8143306",
+  "explorer": "https://explorer-studio.genlayer.com/address/0x455f601Cf9cb73c08df9c4DA6DB6f469e8143306",
   "config": {
     "assessment_count": 0,
     "compatible_count": 0,
@@ -9,35 +9,35 @@
     "github_raw": "https://raw.githubusercontent.com",
     "incompatible_count": 0,
     "max_attempts": 3,
-    "version": "UPGRADE_DIFF_SENTINEL_V2"
+    "version": "UPGRADE_DIFF_SENTINEL_V3"
   },
   "transactions": [
     {
       "method": "create_assessment",
-      "tx": "0xee571146e0b69bb22ef06250af0daefc83bdaed51176951365e1813efb651c39",
+      "tx": "0x8baabf1d46e6645e9b1edc0ae4323ebf94e83490609b050b44d00f29dc26f8f9",
       "status": "FINALIZED",
       "execution": "SUCCESS",
       "consensus": "MAJORITY_AGREE",
       "expected_error": false,
-      "explorer": "https://explorer-studio.genlayer.com/transactions/0xee571146e0b69bb22ef06250af0daefc83bdaed51176951365e1813efb651c39"
+      "explorer": "https://explorer-studio.genlayer.com/transactions/0x8baabf1d46e6645e9b1edc0ae4323ebf94e83490609b050b44d00f29dc26f8f9"
     },
     {
       "method": "evaluate_upgrade",
-      "tx": "0x754ff5a9958b0b014922be318e9e1c8cc19c0011c8e2b46916a7687f96039e63",
+      "tx": "0x10da9d369634a56771ce2126d33a37521e8c5ff57f61eedd69925206636a5b18",
       "status": "FINALIZED",
       "execution": "ERROR",
       "consensus": "MAJORITY_AGREE",
       "expected_error": true,
-      "explorer": "https://explorer-studio.genlayer.com/transactions/0x754ff5a9958b0b014922be318e9e1c8cc19c0011c8e2b46916a7687f96039e63"
+      "explorer": "https://explorer-studio.genlayer.com/transactions/0x10da9d369634a56771ce2126d33a37521e8c5ff57f61eedd69925206636a5b18"
     },
     {
       "method": "evaluate_upgrade",
-      "tx": "0xf1efb585105e9e97ae75ac87e60fb6cf6e9ca547719eb30a916d1c21d65105eb",
+      "tx": "0x3664848115f124e29a0c526b22fd4a1fde25b3700afd0af46728503b392a6250",
       "status": "FINALIZED",
       "execution": "SUCCESS",
       "consensus": "MAJORITY_AGREE",
       "expected_error": false,
-      "explorer": "https://explorer-studio.genlayer.com/transactions/0xf1efb585105e9e97ae75ac87e60fb6cf6e9ca547719eb30a916d1c21d65105eb"
+      "explorer": "https://explorer-studio.genlayer.com/transactions/0x3664848115f124e29a0c526b22fd4a1fde25b3700afd0af46728503b392a6250"
     }
   ],
   "readbacks": {
@@ -66,15 +66,15 @@
       "attempt_count": 1,
       "base_commit": "4c58614d793be96d14f13bdb5a73ed749c6454a0",
       "creator": "addr#fed97e2ae1a8c1983b7ca206b3545e6a2c685e43",
-      "final_evidence_digest": "e966ddea20a373b6af804112bab14550a334bea485d882164563f7ebdd0a6f10",
+      "final_evidence_digest": "99bf91824a13beb5e2f378db8d37b7462bb0ab05dd6f536af976a38783f83ae4",
       "manifest_commit": "b10a9b7a038a4d4c6e448549e2530d3c68247672",
       "manifest_path": "audit/upgrade.json",
       "manifest_sha256": "1d6699f92d30543a8c32138739f62aeec5d49529392930b4d8a845481a61939c",
       "owner": "macdon3202",
-      "reason_code": "COMPARE_BINDING_FAILED",
+      "reason_code": "WITHIN_APPROVED_SCOPE",
       "release_tag": "upgrade-v2",
       "repository": "upgrade-diff-sentinel-fixture",
-      "state": "INCOMPATIBLE",
+      "state": "COMPATIBLE",
       "target_commit": "571300956f7722113e518bc3728ffd8920d10140"
     },
     "attempt_1": {
@@ -83,13 +83,13 @@
       "asset_flow_risk": "NO",
       "attempt": 1,
       "authorization_risk": "NO",
-      "compare_binding": "MISMATCH",
-      "derived_state": "INCOMPATIBLE",
-      "evidence_digest": "e966ddea20a373b6af804112bab14550a334bea485d882164563f7ebdd0a6f10",
+      "compare_binding": "MATCH",
+      "derived_state": "COMPATIBLE",
+      "evidence_digest": "99bf91824a13beb5e2f378db8d37b7462bb0ab05dd6f536af976a38783f83ae4",
       "fee_risk": "NO",
       "file_coverage": "MATCH",
       "manifest_binding": "MATCH",
-      "reason_code": "COMPARE_BINDING_FAILED",
+      "reason_code": "WITHIN_APPROVED_SCOPE",
       "scope_alignment": "MATCH",
       "source_status": "VERIFIED",
       "storage_risk": "NO"

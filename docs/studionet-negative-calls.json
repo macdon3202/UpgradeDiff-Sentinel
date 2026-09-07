@@ -1,0 +1,72 @@
+{
+  "network": "studionet",
+  "contract": "0x455f601Cf9cb73c08df9c4DA6DB6f469e8143306",
+  "explorer": "https://explorer-studio.genlayer.com/address/0x455f601Cf9cb73c08df9c4DA6DB6f469e8143306",
+  "config": {
+    "assessment_count": 1,
+    "compatible_count": 1,
+    "github_api": "https://api.github.com",
+    "github_raw": "https://raw.githubusercontent.com",
+    "incompatible_count": 0,
+    "max_attempts": 3,
+    "version": "UPGRADE_DIFF_SENTINEL_V3"
+  },
+  "transactions": [
+    {
+      "method": "create_assessment",
+      "tx": "0xea25c6b61f6d35e3a4704931c8a923a5288d0a08b467db54be13dc30fe0e6f44",
+      "status": "FINALIZED",
+      "execution": "ERROR",
+      "consensus": "MAJORITY_AGREE",
+      "expected_error": true,
+      "explorer": "https://explorer-studio.genlayer.com/transactions/0xea25c6b61f6d35e3a4704931c8a923a5288d0a08b467db54be13dc30fe0e6f44"
+    },
+    {
+      "method": "retry_assessment",
+      "tx": "0x26ff72205850575a3dc9f63537372c1f523e49e25968c83fe162eef9eeeb05a3",
+      "status": "FINALIZED",
+      "execution": "ERROR",
+      "consensus": "MAJORITY_AGREE",
+      "expected_error": true,
+      "explorer": "https://explorer-studio.genlayer.com/transactions/0x26ff72205850575a3dc9f63537372c1f523e49e25968c83fe162eef9eeeb05a3"
+    }
+  ],
+  "readbacks": {
+    "before_config": {
+      "assessment_count": 1,
+      "compatible_count": 1,
+      "github_api": "https://api.github.com",
+      "github_raw": "https://raw.githubusercontent.com",
+      "incompatible_count": 0,
+      "max_attempts": 3,
+      "version": "UPGRADE_DIFF_SENTINEL_V3"
+    },
+    "after_config": {
+      "assessment_count": 1,
+      "compatible_count": 1,
+      "github_api": "https://api.github.com",
+      "github_raw": "https://raw.githubusercontent.com",
+      "incompatible_count": 0,
+      "max_attempts": 3,
+      "version": "UPGRADE_DIFF_SENTINEL_V3"
+    },
+    "terminal_record": {
+      "approved_scope": "Only documentation and observability instrumentation may change.",
+      "approved_scope_sha256": "d21951480cfd86d3f9c0622580868152b78086534540353ba06b07b618fa77b0",
+      "assessment_id": 0,
+      "attempt_count": 1,
+      "base_commit": "4c58614d793be96d14f13bdb5a73ed749c6454a0",
+      "creator": "addr#fed97e2ae1a8c1983b7ca206b3545e6a2c685e43",
+      "final_evidence_digest": "99bf91824a13beb5e2f378db8d37b7462bb0ab05dd6f536af976a38783f83ae4",
+      "manifest_commit": "b10a9b7a038a4d4c6e448549e2530d3c68247672",
+      "manifest_path": "audit/upgrade.json",
+      "manifest_sha256": "1d6699f92d30543a8c32138739f62aeec5d49529392930b4d8a845481a61939c",
+      "owner": "macdon3202",
+      "reason_code": "WITHIN_APPROVED_SCOPE",
+      "release_tag": "upgrade-v2",
+      "repository": "upgrade-diff-sentinel-fixture",
+      "state": "COMPATIBLE",
+      "target_commit": "571300956f7722113e518bc3728ffd8920d10140"
+    }
+  }
+}
