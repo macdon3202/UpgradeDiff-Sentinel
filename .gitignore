@@ -1,5 +1,6 @@
 .pytest_cache/
 __pycache__/
+fixture-repo/
 *.pyc
 artifacts/
 scripts/.state/

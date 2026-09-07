@@ -1,7 +1,7 @@
 {
   "network": "studionet",
-  "contract": "0x7B81979993e344FA5c0A2F291c7A65BC429e960b",
-  "explorer": "https://explorer-studio.genlayer.com/address/0x7B81979993e344FA5c0A2F291c7A65BC429e960b",
+  "contract": "0xC8c4F8030D0c7A71Bfd3b1340771Dc3eCab1a747",
+  "explorer": "https://explorer-studio.genlayer.com/address/0xC8c4F8030D0c7A71Bfd3b1340771Dc3eCab1a747",
   "config": {
     "assessment_count": 0,
     "compatible_count": 0,
@@ -9,7 +9,7 @@
     "github_raw": "https://raw.githubusercontent.com",
     "incompatible_count": 0,
     "max_attempts": 3,
-    "version": "UPGRADE_DIFF_SENTINEL_V1"
+    "version": "UPGRADE_DIFF_SENTINEL_V2"
   },
   "transactions": [],
   "readbacks": {}
